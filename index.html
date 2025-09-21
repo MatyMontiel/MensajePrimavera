@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Feliz Día de la Primavera</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Satisfy&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#ffe082"/>
+
+<style>
+  :root{
+    --ink:#fff; --ink-sub:#f1f5f9;
+    --notif-icon: 56px;     /* tamaño del ícono (se ajusta en responsive) */
+  }
+  *{box-sizing:border-box} html,body{height:100%;margin:0}
+  body{overflow:hidden;background:#000;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans",sans-serif}
+
+  /* Fondo con blur leve */
+  .bg{
+    position:fixed; inset:-2%;
+    background:url("assets/fondo.jpg") center/cover no-repeat;
+    filter:blur(3.5px) brightness(.98); transform:scale(1.03);
+    z-index:-2;
+  }
+  .veil{position:fixed; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.16),rgba(0,0,0,.1) 40%,rgba(0,0,0,.22)); z-index:-1;}
+
+  .stage{position:fixed; inset:0; display:grid; place-items:center; padding:clamp(12px,2vw,24px)}
+  .wrap{position:relative; width:min(1200px,96vw); height:min(88vh,860px)}
+
+  /* Línea superior */
+  .mini{
+    position:absolute; top:clamp(12px,3.5vh,30px); left:50%; transform:translateX(-50%);
+    font-family:"Montserrat",system-ui; font-weight:800; letter-spacing:.16em;
+    font-size:clamp(10px,1.6vw,14px); color:var(--ink); text-shadow:0 2px 10px rgba(0,0,0,.35);
+    z-index:6; user-select:none;
+  }
+
+  /* Títulos debajo */
+  .titles{
+    position:absolute; left:50%; transform:translateX(-50%);
+    top: calc(clamp(12px,3.5vh,30px) + 28px);
+    width:100%; text-align:center; z-index:2; pointer-events:none;
+  }
+  .title-stack{ position:relative; display:inline-block; }
+  .back-title{
+    font-family:"Montserrat",system-ui; font-weight:900; letter-spacing:.06em;
+    font-size:clamp(56px,15vw,160px); line-height:.9; color:transparent; opacity:.3; /* 30% */
+    -webkit-text-stroke:2px rgba(255,255,255,.95);
+    text-shadow:
+      0 0 1px rgba(255,255,255,.9),
+      1px 0 0 rgba(255,255,255,.9), -1px 0 0 rgba(255,255,255,.9),
+      0 1px 0 rgba(255,255,255,.9),  0 -1px 0 rgba(255,255,255,.9),
+      0 2px 18px rgba(0,0,0,.35);
+    margin:0;
+  }
+  .front-title{
+    font-family:"Satisfy",cursive;
+    font-size:clamp(36px,8vw,110px); color:var(--ink);
+    text-shadow: 0 2px 12px rgba(0,0,0,.35);
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    margin:0; z-index:3; white-space:nowrap;
+  }
+
+  /* Ramo centrado */
+  .bouquet{
+    position:absolute; top:48%; left:50%; transform:translate(-50%,-50%);
+    width:min(420px,45vw); z-index:4;
+    animation:bob 6.2s ease-in-out infinite, sway 10s ease-in-out infinite;
+  }
+  .bouquet img{
+    width:100%; display:block; pointer-events:none;
+    filter:
+      drop-shadow(0 0 0 rgba(255,255,255,1))
+      drop-shadow(0 0 6px rgba(255,255,255,.85))
+      drop-shadow(0 12px 22px rgba(0,0,0,.38));
+  }
+  @keyframes bob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 10px))}}
+  @keyframes sway{0%,100%{transform:translate(-50%,-50%) rotate(0)}50%{transform:translate(-50%,-50%) rotate(-1.6deg)}}
+
+  /* Notificación iOS */
+  .ios-notif{
+    position:absolute; left:50%; transform:translateX(-50%);
+    bottom: clamp(18px, 3vh, 26px);
+    display:grid;
+    grid-template-columns: var(--notif-icon) 1fr;  /* ¡solo esta! */
+    grid-template-rows: auto auto;
+    grid-column-gap:12px; grid-row-gap:8px;
+    width:min(92vw,760px);
+    padding:16px 18px; border-radius:18px;
+    background:rgba(255,255,255,.20);
+    border:1px solid rgba(255,255,255,.45);
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    box-shadow:0 18px 50px rgba(15,23,42,.22), 0 2px 8px rgba(15,23,42,.12);
+    z-index:6; pointer-events:none; align-items:center; min-height:88px;
+  }
+  .ios-icon{
+    grid-column:1; grid-row:1 / -1; width:var(--notif-icon); height:100%;
+    display:grid; place-items:center; justify-self:center; align-self:center;
+    background:transparent; border-radius:12px; overflow:visible;
+  }
+  .ios-icon img{
+    max-height:calc(100% - 8px); max-width:100%;
+    width:auto; height:auto; object-fit:contain; object-position:50% 40%;
+    display:block;
+  }
+  .ios-head{display:flex; align-items:center; justify-content:space-between; grid-column:2/3; line-height:1; margin-top:0;}
+  .ios-badge{
+    font-family:"Montserrat",system-ui; font-weight:800; font-size:clamp(10px,2.8vw,12px);
+    letter-spacing:.12em; color:#b45309; background:rgba(255,255,255,.35);
+    border:1px solid rgba(255,255,255,.6); padding:4px 8px; border-radius:999px;
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  }
+  .ios-time{font-family:"Montserrat",system-ui; font-weight:700; font-size:clamp(10px,2.8vw,12px); color:#0b2539; opacity:.85;}
+  .ios-text{grid-column:2/3; line-height:1.15; color:#0b2539;}
+  .ios-text strong{font-family:"Montserrat",system-ui; font-weight:800; font-size:clamp(14px,3.6vw,18px); display:block;}
+  .ios-text span{font-family:"Montserrat",system-ui; font-weight:600; font-size:clamp(13px,3.2vw,16px); opacity:.95;}
+
+  /* Lluvia de girasoles detrás */
+  .sunflowers{ position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden }
+  .sun{
+    position:absolute; display:block; width:24px; height:24px; opacity:.95;
+    animation: fallY var(--dur) linear var(--delay) infinite, sway var(--sway) ease-in-out infinite;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.14));
+    top:-10vh; transform: translateY(0) rotate(var(--rot,0deg));
+  }
+  @keyframes fallY{ to { transform: translateY(120vh) rotate(540deg); } }
+  @keyframes sway{ 0%,100%{ margin-left:-8px } 50%{ margin-left:8px } }
+
+  /* ===== Responsive ===== */
+  
+  /*Tablets*/
+  @media (max-width: 900px){
+    :root{ --notif-icon: 56px; }
+    .bouquet{ width: min(440px, 62vw); top: 50%; }
+    .ios-notif{ width: min(94vw, 680px); padding: 14px 16px; min-height: 84px; }
+    .ios-text strong{ font-size: clamp(14px, 4vw, 18px); }
+    .ios-text span{ font-size: clamp(13px, 3.6vw, 16px); }
+  }
+  
+  /*Mobiles*/
+  @media (max-width: 480px){
+    :root{ --notif-icon: 48px; }
+    .mini{ letter-spacing:.12em; font-size: 12px; }
+    .back-title{ font-size: clamp(36px, 12vw, 96px); letter-spacing: .03em; -webkit-text-stroke: 1.4px rgba(255,255,255,.95); }
+    .front-title{ font-size: clamp(30px, 10vw, 72px); }
+    .bouquet{ width: min(420px, 82vw); top: 52%; animation: bob 5.8s ease-in-out infinite, sway 9s ease-in-out infinite; }
+    .ios-notif{ width: min(96vw, 480px); padding: 12px 14px; min-height: 78px; grid-column-gap:10px; grid-row-gap:8px; }
+    .ios-badge{ padding: 3px 7px; }
+  }
+
+  /* Teléfonos muy chicos ≤ 360px */
+  @media (max-width: 360px){
+    .bouquet{
+      width: min(440px, 88vw); /* aún más grande en pantallas muy angostas */
+      top: 53%;
+    }
+  }
+  
+  @media (max-height: 640px){
+    .bouquet{ animation:none; }
+  }
+</style>
+</head>
+<body oncontextmenu="return false">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+
+  <!-- Música (assets/musica.mp3). En iOS inicia muteada y se desmutea al toque -->
+  <audio id="bgm" src="assets/musica.mp3" preload="auto" loop autoplay muted playsinline></audio>
+
+  <!-- Overlay mínimo para iOS si el sistema bloquea el sonido -->
+  <div id="audio-unlock" style="position:fixed; inset:0; display:none; place-items:center; z-index:99999; background:rgba(0,0,0,.12); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px);">
+    <div style="background:rgba(255,255,255,.85); color:#0b2539; border:1px solid rgba(255,255,255,.6); border-radius:14px; padding:10px 14px; font:600 14px/1.2 Montserrat, system-ui, sans-serif; box-shadow:0 8px 28px rgba(15,23,42,.2);">
+      Toca para activar el sonido
+    </div>
+  </div>
+
+  <main class="stage">
+    <section class="wrap">
+      <div class="mini">¡FELIZ DÍA DE LA!</div>
+
+      <!-- Títulos apilados debajo -->
+      <div class="titles">
+        <div class="title-stack">
+          <h2 class="back-title">PRIMAVERA</h2>
+          <h1 class="front-title">Primavera</h1>
+        </div>
+      </div>
+
+      <!-- Ramo -->
+      <figure class="bouquet">
+        <img src="assets/ramo.png" alt="Ramo de flores amarillas con moño">
+      </figure>
+
+      <!-- Notificación iOS abajo del ramo -->
+      <div class="ios-notif" role="status" aria-label="Notificación">
+        <div class="ios-icon">
+          <img src="assets/appicon.png" alt="Ícono de Matias">
+        </div>
+        <div class="ios-head">
+          <span class="ios-badge">URGENTE</span>
+          <span class="ios-time">Ahora</span>
+        </div>
+        <div class="ios-text">
+          <strong>Matias te dice:</strong>
+          <span>Una flor, para otra flor</span>
+        </div>
+      </div>
+
+      <!-- Lluvia de girasoles -->
+      <div class="sunflowers" id="sunflowers"></div>
+    </section>
+  </main>
+
+<script>
+  /* Lluvia de girasoles (usa assets/girasol.png) */
+  (function(){
+    const layer = document.getElementById('sunflowers');
+    const DENSITY = Math.min(140, Math.floor((innerWidth * innerHeight) / 15000));
+    for (let i = 0; i < DENSITY; i++) {
+      const img = document.createElement('img');
+      img.className = 'sun';
+      img.src = 'assets/girasol.png';
+      const size  = 22 + Math.random() * 28;   // 22–50px
+      const left  = Math.random() * 106 - 3;   // -3vw a 103vw
+      const dur   = 12 + Math.random() * 16;   // 12–28s
+      const delay = -Math.random() * dur;      // arranque desfasado
+      const sway  = 3 + Math.random() * 2;     // 3–5s
+      const rot   = Math.floor(Math.random() * 360);
+
+      img.style.width = img.style.height = size + 'px';
+      img.style.left  = left + 'vw';
+      img.style.setProperty('--dur',   dur + 's');
+      img.style.setProperty('--delay', delay + 's');
+      img.style.setProperty('--sway',  sway + 's');
+      img.style.setProperty('--rot',   rot + 'deg');
+      layer.appendChild(img);
+    }
+  })();
+</script>
+
+<script>
+  /* Música: intenta autoplay con sonido; en iOS se desmutea al primer toque */
+  (function(){
+    const audio = document.getElementById('bgm');
+    const overlay = document.getElementById('audio-unlock');
+    if(!audio) return;
+
+    const TARGET_VOL = 0.5, STEP = 0.05, INTERVAL = 120;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                  (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+
+    function fadeTo(v){
+      clearInterval(audio.__fadeId);
+      audio.__fadeId = setInterval(()=>{
+        audio.volume = Math.min(v, (audio.volume || 0) + STEP);
+        if (audio.volume >= v) clearInterval(audio.__fadeId);
+      }, INTERVAL);
+    }
+    function showOverlay(){ if (overlay) overlay.style.display = 'grid'; }
+    function hideOverlay(){ if (overlay) overlay.style.display = 'none'; }
+
+    async function tryPlayWithSound(){
+      try { audio.muted = false; await audio.play(); fadeTo(TARGET_VOL); hideOverlay(); return true; }
+      catch(e){ return false; }
+    }
+    async function ensureMutedPlaying(){
+      try { audio.muted = true; audio.volume = 0; await audio.play(); return true; }
+      catch(e){ return false; }
+    }
+
+    (async function boot(){
+      const okMuted = await ensureMutedPlaying();
+      if(!okMuted){ setTimeout(boot, 600); return; }
+      const okSound = await tryPlayWithSound();
+      if(okSound) return;
+      if(isIOS) showOverlay();
+
+      const unlock = async () => {
+        const ok = await tryPlayWithSound();
+        if(ok){ window.removeEventListener('touchstart',unlock); window.removeEventListener('mousedown',unlock); window.removeEventListener('keydown',unlock); }
+      };
+      window.addEventListener('touchstart', unlock);
+      window.addEventListener('mousedown',  unlock);
+      window.addEventListener('keydown',    unlock);
+
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlayWithSound(); });
+      audio.addEventListener('canplay', tryPlayWithSound, { once:true });
+    })();
+  })();
+</script>
+</body>
+</html>
